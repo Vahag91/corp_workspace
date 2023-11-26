@@ -1,0 +1,92 @@
+.user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.userDetails {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    background: #1D2125;
+    color: aliceblue;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userProfile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+
+.form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+
+
+label {
+    font-weight: bold;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+input[type="password"] {
+    margin-top: 10px;
+}
+
+
+.btnGroup button {
+    margin: 0 auto;
+    background: #3c00d0;
+    color: #fff;
+    height: 40px;
+    width: 120px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btnGroup button:hover {
+    background: #5a2ee4;
+    transform: scale(1.05);
+}
+
+/* Add more CSS as needed for additional styling */

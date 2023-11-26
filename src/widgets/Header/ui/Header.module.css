@@ -1,0 +1,103 @@
+body,
+h1,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+header {
+    background-color: #1D2125;
+    color: white;
+    padding: 10px 5%;
+    border-bottom: 1px solid #6a6d70;
+}
+
+header span {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.navList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin-right: 20px;
+}
+
+
+.navList li {
+    margin-right: 20px;
+    padding: 10px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.navList li:hover {
+    background-color: rgb(96, 96, 117);
+    border-radius: 10px;
+}
+
+
+.navIcons {
+    display: flex;
+    list-style: none;
+    margin-left: 5px;
+  }
+
+.navIcons li  {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}
+
+.navIcons li span {
+   padding: 4px;
+}
+
+input {
+    padding-right: 30px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+
+
+.searchBox {
+ position: relative;
+  }
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+    top: 60%;
+    transform: translateY(-50%);
+    color: black;
+}
+
+.userPhoto img {
+  
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}

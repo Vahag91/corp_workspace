@@ -1,0 +1,70 @@
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    background-color: #1D2125;
+    max-height: 90vh;
+    padding: 0 16px;
+    width: 256px;
+}
+
+.sideBar span {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(227, 231, 234);
+}
+
+.sideBar li {
+    list-style: none;
+}
+
+
+.sideBar a {
+    text-decoration: none;
+    color: rgb(19, 19, 17);
+}
+
+
+.sideBarBody ul li ul {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.sideBarBody ul {
+    margin: 0px 20px;
+    padding: 10px;
+}
+
+.sideBarBody ul li {
+    margin: 5px 0;
+    padding: 4px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.sideBarHead {
+   border-bottom: 2px solid #67686a;
+}
+
+.sideBarHead ul {
+    margin: 0;
+    padding: 10px;
+
+}
+
+.sideBarHead ul li {
+    margin: 5px 0;
+    padding: 4px;
+    transition: background-color 0.3s, border-radius 0.3s;
+}
+
+.sideBarHead ul li:hover {
+    background-color: rgb(96, 96, 117);
+    border-radius: 10px;
+}
+
+.sideBarBody ul li ul li:hover {
+    background-color: rgb(96, 96, 117);
+    border-radius: 10px;
+}

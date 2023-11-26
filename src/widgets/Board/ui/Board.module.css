@@ -1,0 +1,183 @@
+.mainBoard {
+    width: 60%;
+    padding: 20px;
+    background-color: inherit;
+    border-radius: 10px;
+    color: rgb(217, 217, 217);
+}
+
+.boardHeader {
+    font-size: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    border-bottom: 2px solid #8d8989;
+    padding: 5px;
+}
+
+.boardHeader div {
+    margin: 15px 0;
+    padding: 5px;
+}
+
+.boardHeaderTitle {
+    border: 2px solid;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgb(142, 227, 248), rgb(6, 202, 246));
+}
+
+.boardHeaderTitle h2 {
+    transform: scale(1.9);
+}
+
+
+.boardHeaderBody {
+    display: flex;
+    align-items: center;
+
+}
+
+.boardHeaderBody h2 {
+    margin: 5px 10px;
+}
+
+.boardHeaderBody button span {
+    font-size: 15px;
+}
+
+.boardHeaderBody button {
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    margin: 10px;
+    color: #d9d9d9;
+}
+
+.boardHeaderBody button:hover {
+    background-color: #444343;
+}
+
+
+
+
+
+.boardBody {
+    margin-top: 30px;
+    background-color: #1D2125;
+}
+
+.board {
+    background-color: inherit;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.board h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.boardList {
+    margin-top: 10px;
+}
+
+.boardList ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+.boardList ul li {
+
+    width: 200px;
+    height: 120px;
+    background-color: #e6e6e6;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boardList li:hover {
+    background-color: #d9d9d9;
+}
+
+
+.boardBodyButton {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.boardBodyButton span {
+    color: #d9d9d9;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.boardBodyButton:hover{
+    filter: brightness(80%);
+}
+
+
+.addBoardBtn {
+    width: 200px;
+    height: 120px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #282D33;
+    border: none
+}
+
+.addBoardBtn span {
+    font-size: 15px;
+    color: rgb(217, 217, 217);
+}
+.addBoardBtn:hover {
+  
+    background-color: rgb(61, 66, 72);
+}
+
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between input and button */
+  }
+  
+
+  .inputField {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #f5f2f2;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .inputField:focus {
+    border-color: #0079bf;
+  }
+  
+  
+  .addButton {
+    background-color: #61bd4f; 
+    color: #d9d9d9;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .addButton:hover {
+    background-color: #5aac44; 
+  }
