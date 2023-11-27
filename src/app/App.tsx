@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { onAuthStateChanged } from "firebase/auth"
-import { auth } from '../firebase'
+import { auth } from '../firebase/firebaseConfig'
 import { setEmail, setUsername, setUserPhotoUrl } from "redux/slices/userSlice"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "redux/store/store"

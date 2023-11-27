@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setIsLogged } from "redux/slices/userSlice";
-import { auth } from "../../../firebase";
+import { auth } from "../../../firebase/firebaseConfig";
 import styles from './SignInGithub.module.css'
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { FaGithub } from "react-icons/fa6";

@@ -52,8 +52,8 @@ const { email,username,userPhotoUrl} = useSelector((state:RootState)=>{
 
                     <div>
                         <label htmlFor="password"> Change password </label>
-                        <input type="password" id="password" />
-                        <input type="password" id="password" />
+                        <input type="password"  />
+                        <input type="password"  />
                     </div>
                 </div>
                 <div className={styles.btnGroup}>
