@@ -1,31 +1,24 @@
-import { useDispatch } from "react-redux";
-import { setIsLogged } from "redux/slices/userSlice";
-import { auth } from "../../../firebase/firebaseConfig";
 import styles from './SignInGithub.module.css'
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { FaGithub } from "react-icons/fa6";
+import { useAppDispatch } from "entities/hooks/useAppDispatch";
+import { loginWithGithub } from "entities/redux/thunk/loginWithGithub";
 
 
 const SignInGithub: React.FC = () => {
 
-    const dispatch = useDispatch()
+
+    const dispatch = useAppDispatch()
+
+
     const signInGithub = async () => {
-        const provider = new GithubAuthProvider()
+       await dispatch(loginWithGithub())
+   }
 
-        try {
-            await signInWithPopup(auth, provider)
-            dispatch(setIsLogged(true))
-        } catch (err) {
-            console.log(err);
-
-        }
-    }
-
-return (
-    <button type='button' className={styles.githubBtn} onClick={signInGithub}>
-    <FaGithub />
-</button>
-)
+    return (
+        <button type='button' className={styles.githubBtn} onClick={signInGithub}>
+            <FaGithub />
+        </button>
+    )
 }
 
 

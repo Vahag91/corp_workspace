@@ -1,28 +1,30 @@
 import styles from './UserSidebar.module.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'redux/store/store'
-import { setIsLogged } from 'redux/slices/userSlice' 
+import { useSelector } from 'react-redux'
+import { RootState } from 'entities/redux/store/store'
+
 
 
 const UserSidebar: React.FC = () => {
 
-    const { email, username, isLogged, userPhotoUrl} = useSelector((state: RootState) => {
-        return state.user
+  
+    const users = useSelector((state: RootState) => {
+        return state.users
     })
 
-  const dispatch = useDispatch()
+
+
 
 
     return (
         <div className={styles.userSidebar}>
-            {isLogged ? (
+            {users.profile && users.profile.displayName  ? (
                 <>
                     <div className={styles.userInfo}>
-                        <span> {username}</span>
-                        <span> {email}</span>
+                        <span> {users.profile.displayName}</span>
+                        <span> {users.profile.email}</span>
 
-                        {userPhotoUrl ? (
-                            <img src={userPhotoUrl} alt="userPhoto" />
+                        {users.profile.photoURL ? (
+                            <img src={users.profile.photoURL} alt="userPhoto" />
                         ) : null
                         }
                     </div>
@@ -32,7 +34,7 @@ const UserSidebar: React.FC = () => {
                             <li> Managa Account</li>
                             <li> Cards </li>
                             <li>
-                                <button type='button' onClick={() => dispatch(setIsLogged(false))}> Log Out</button>
+                                <button type='button'> Log Out</button>
                             </li>
                         </ul>
                     </div>

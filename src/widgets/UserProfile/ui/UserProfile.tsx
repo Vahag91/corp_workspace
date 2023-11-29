@@ -1,35 +1,36 @@
 import React from "react"
 import styles from './UserProfile.module.css'
 import { useSelector } from "react-redux"
-import { RootState } from "redux/store/store"
+import { RootState } from "entities/redux/store/store"
 
 const UserProfile: React.FC = () => {
 
-const { email,username,userPhotoUrl} = useSelector((state:RootState)=>{
-    return state.user
-})
+    const users = useSelector((state: RootState) => {
+        return state.users
+    })
+
 
 
     return (
         <div className={styles.user}>
             <div className={styles.userDetails}>
-                {username ? (
+                {users.profile && users.profile.displayName ? (
                     <>
                         <div className={styles.userProfile}>
-                            {userPhotoUrl ? (
-                            <img src={userPhotoUrl} alt="user" />
-                            ): null
+                            {users.profile.photoURL ? (
+                                <img src={users.profile.photoURL} alt="user" />
+                            ) : null
                             }
 
                         </div>
 
                         <div className={styles.userInfo}>
-                            <h2> {username}</h2>
-                            <p> {email}</p>
+                            <h2> {users.profile.displayName}</h2>
+                            <p> {users.profile.email}</p>
                         </div>
                     </>
-                ): null
-}
+                ) : null
+                }
 
             </div>
 
@@ -52,8 +53,8 @@ const { email,username,userPhotoUrl} = useSelector((state:RootState)=>{
 
                     <div>
                         <label htmlFor="password"> Change password </label>
-                        <input type="password"  />
-                        <input type="password"  />
+                        <input type="password" />
+                        <input type="password" />
                     </div>
                 </div>
                 <div className={styles.btnGroup}>

@@ -4,9 +4,9 @@ import styles from './TodoCardList.module.css'
 import { FaRegSun, FaPen, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useSelector } from "react-redux";
-import { RootState } from "redux/store/store";
+import { RootState } from "entities/redux/store/store";
 import { useDispatch } from "react-redux";
-import { setCard, setColumn } from "redux/slices/todoCardSlice";
+import { setCard, setColumn } from "entities/redux/slices/todoCardSlice";
 
 
 

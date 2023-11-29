@@ -2,8 +2,8 @@ import { useState } from 'react';
 import styles from './Board.module.css'
 import { FaPen, FaClipboardUser } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store/store';
-import { Boards, setBoard } from 'redux/slices/boardSlice';
+import { RootState } from 'entities/redux/store/store';
+import { Boards, setBoard } from 'entities/redux/slices/boardSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const Board: React.FC = () => {
 
 
     const myBoard = useSelector((state: RootState) => {
-        return state.boards.boardList
+        return state.board.boardList
     })
 
     const dispatch = useDispatch()

@@ -17,7 +17,7 @@ const initialState: BoardsState = {
 }
 
 export const boardSlice = createSlice({
-    name: "boards",
+    name: "board",
     initialState,
     reducers: {
         setBoard: (state, action: PayloadAction<Boards>) => {

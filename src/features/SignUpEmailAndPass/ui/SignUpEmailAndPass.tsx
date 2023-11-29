@@ -1,34 +1,30 @@
 import { FaPaperPlane, FaLock } from "react-icons/fa6";
-import { useDispatch } from 'react-redux';
-import { setUsername, setEmail, setPassword, setIsLogged } from 'redux/slices/userSlice';
 import { validateEmail, validatePassword } from 'utils/validate';
 import styles from './SignUpEmailAndPass.module.css'
 
 
 
+
 const SignUpEmailAndPass: React.FC = () => {
 
-    let userEmail = ""
-    let userPassword = ""
-    let userName = ""
+    let displayName = ""
+    let email = ""
+    let photoURL = "" // parior
 
 
-    const dispatch = useDispatch()
 
     const handleSignIn = (): void => {
 
-        if (!validateEmail(userEmail)) {
+        if (!validateEmail(email)) {
             return
         }
 
-        if (!validatePassword(userPassword)) {
+        if (!validatePassword(displayName)) {
             return
         }
 
-        dispatch(setEmail(userEmail))
-        dispatch(setPassword(userPassword))
-        dispatch(setUsername(userName))
-        dispatch(setIsLogged(true))
+   
+      
     }
 
 
@@ -40,7 +36,7 @@ const SignUpEmailAndPass: React.FC = () => {
                     type="text"
                     name="username"
                     placeholder="username"
-                    onChange={(e) => userName = e.target.value} />
+                    onChange={(e) => displayName = e.target.value} />
                 <span> <FaPaperPlane /> </span>
             </div>
 
@@ -49,7 +45,7 @@ const SignUpEmailAndPass: React.FC = () => {
                     type="email"
                     name="email"
                     placeholder="email"
-                    onChange={(e) => userEmail = e.target.value} />
+                    onChange={(e) => email = e.target.value} />
                 <span> <FaPaperPlane /> </span>
             </div>
 
@@ -58,7 +54,7 @@ const SignUpEmailAndPass: React.FC = () => {
                     type="password"
                     name="password"
                     placeholder="password"
-                    onChange={(e) => userPassword = e.target.value}
+                    onChange={(e) => photoURL = e.target.value}
                 />
                 <span> <FaLock /> </span>
             </div>
