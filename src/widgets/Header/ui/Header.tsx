@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
 import { createTask, } from "entities/redux/slices/taskSlice";
 import { createColumn } from "entities/redux/slices/columnSlice";
-import { createBoard } from "entities/redux/slices/boardsSlice";
+import { createBoard, fetchBoard } from "entities/redux/slices/boardsSlice";
 
 const Header: React.FC = () => {
 
@@ -22,23 +22,37 @@ const Header: React.FC = () => {
     useEffect(() => {
         if (!user.profile || !user.profile.displayName) {
             navigate('/login');
-        } else {
-            navigate('/');
         }
+     
+        // console.log(columns, "columns");
+        // console.log(tasks);
+    ;
+
+
     }, [user, navigate])
 
+  
 
-
-    const obj = {
-        author: "vahag",
-        description: "ffff",
-        title: "mmmm"
+    const postData = {
+        author: "appaaaaaa",
+        description: "vahagagaga",
+        title: "vahagaaaaaaa"
     }
 
-    const boards = useSelector((state:RootState)=>{
+    const boardId = 'LeOFLUwdQwjEHkUdMBGp'
+    const columnId = "e1oGIVtBVhXFbM16yTuE"
+
+    const boards = useSelector((state: RootState) => {
         return state.boards
     })
-console.log(boards);
+    const columns = useSelector((state: RootState) => {
+        return state.column
+    })
+    const tasks = useSelector((state: RootState) => {
+        return state.tasks
+    })
+    console.log(boards[0], "borad");
+  
 
     const dispatch = useAppDispatch()
     // useEffect(()=>{
@@ -71,9 +85,9 @@ console.log(boards);
     return (
         <header>
             <nav className={styles.navBar}>
-                <button onClick={() => dispatch(createColumn(obj))}> column</button>
-                <button onClick={() => dispatch(createTask(obj))}> task</button>
-                <button onClick={() => dispatch(createBoard(obj))}> board</button>
+                <button onClick={() => dispatch(fetchBoard(boardId))}> column</button>
+                <button onClick={() => dispatch(createTask({ postData, boardId, columnId }))}> task</button>
+                <button onClick={() => dispatch(createBoard(postData))}> board</button>
                 <ul className={styles.navList}>
                     <li> <Link to="" className={styles.linkStyle}> <span><FaList /> </span></Link></li>
                     <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> Trello</span></Link></li>
