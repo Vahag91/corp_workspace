@@ -10,30 +10,37 @@ export interface Task {
     title: string;
 }
 
-const initialState: Task[] = [];
+const initialState: Task[] = [
+ { id: "1",
+  author: "",
+  description: "",
+  title: "",
+}
+];
 
 export const createTask = createAsyncThunk(
-    "tasks/createTask",
-    async ({ postData, boardId, columnId }: any) => {
-           const tasks = collection(db, "boards", boardId, "columns", columnId, "tasks");
-           const docRef = await addDoc(tasks, postData);
-           return { id: docRef.id, ...postData };
-    }
+  "tasks/createTask",
+  async ({ postData, boardId, columnId }: any) => {
+    const tasks = collection(db, "boards", boardId, "columns", columnId, "tasks");
+    const docRef = await addDoc(tasks, postData);
+    return { id: docRef.id, columnId, ...postData };
+  }
 );
+export const fetchTask = createAsyncThunk(
+  "tasks/fetchTask",
+  async ({ boardId, columnId }: any) => {
+    const tasksCollection = collection(db, "boards", boardId, "columns", columnId, "tasks");
+    const querySnapshot = await getDocs(tasksCollection);
 
-export const fetchTasks = createAsyncThunk(
-    "tasks/fetchTasks",
-    async ({ boardId, columnId }: any) => {
-      const tasksCollection = collection(db, "boards", boardId, "columns", columnId, "tasks");
-      const querySnapshot = await getDocs(tasksCollection);
-  
-      const tasks = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-   return tasks;
-    }
-  );
+    const tasks = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      columnId,
+      ...doc.data(),
+    }));
+    
+    return tasks;
+  }
+);
 
 
 export const updateTask = createAsyncThunk(
@@ -64,6 +71,15 @@ const taskSlice = createSlice({
         [createTask.fulfilled as any]: (state, action) => {
             state.push(action.payload)
         },
+        [fetchTask.fulfilled as any]: (state, action) => {
+          const existsPost = state.find(
+            (post: any) => post.id === action.payload.id
+          );
+    
+          if (!existsPost) {
+            state.push(action.payload);
+          }
+      },
     },
 });
 

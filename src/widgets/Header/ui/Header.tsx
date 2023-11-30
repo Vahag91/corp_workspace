@@ -8,8 +8,8 @@ import UserSidebar from "widgets/UserSidebar";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
 import { createTask, } from "entities/redux/slices/taskSlice";
-import { createColumn } from "entities/redux/slices/columnSlice";
 import { createBoard, fetchBoard } from "entities/redux/slices/boardsSlice";
+import { createColumn } from "entities/redux/slices/columnSlice";
 
 const Header: React.FC = () => {
 
@@ -39,8 +39,8 @@ const Header: React.FC = () => {
         title: "vahagaaaaaaa"
     }
 
-    const boardId = 'LeOFLUwdQwjEHkUdMBGp'
-    const columnId = "e1oGIVtBVhXFbM16yTuE"
+    const boardId = 'TbyrSwC7wgzGTu6nBWtw'
+    const columnId = "KldArXXsstx9ierB9oUU"
 
     const boards = useSelector((state: RootState) => {
         return state.boards
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
     const tasks = useSelector((state: RootState) => {
         return state.tasks
     })
-    console.log(boards[0], "borad");
+
   
 
     const dispatch = useAppDispatch()
@@ -85,14 +85,14 @@ const Header: React.FC = () => {
     return (
         <header>
             <nav className={styles.navBar}>
-                <button onClick={() => dispatch(fetchBoard(boardId))}> column</button>
+                
                 <button onClick={() => dispatch(createTask({ postData, boardId, columnId }))}> task</button>
                 <button onClick={() => dispatch(createBoard(postData))}> board</button>
                 <ul className={styles.navList}>
                     <li> <Link to="" className={styles.linkStyle}> <span><FaList /> </span></Link></li>
                     <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> Trello</span></Link></li>
                     <li> <Link to="/user" className={styles.linkStyle}> <span>User</span></Link></li>
-                    <li> <Link to="/workspace" className={styles.linkStyle}> <span>Workspace</span></Link></li>
+                    <li> <Link to="/article/:id" className={styles.linkStyle}> <span>Workspace</span></Link></li>
                 </ul>
 
 

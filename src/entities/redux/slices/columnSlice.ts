@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { db } from "entities/firebase/firebaseConfig";
-import { collection, addDoc,doc,deleteDoc,updateDoc,getDocs } from "@firebase/firestore";
+import { collection, addDoc, doc, deleteDoc, updateDoc, getDocs } from "@firebase/firestore";
 import { Task } from "./taskSlice";
 
 
 export interface Column {
   id: string;
+  title: string;
   tasks: Task[];
 }
 
@@ -32,20 +33,19 @@ export const fetchColumns = createAsyncThunk(
 
 export const createColumn = createAsyncThunk(
   "column/createColumn",
-  async ({ postData, boardId }: any) => {
-
-    const columnRef = await addDoc(collection(db, 'boards', boardId, 'columns'), {});
+  async ({ postData, boardId, title }: any) => {
+    const columnRef = await addDoc(collection(db, 'boards', boardId, 'columns'), { title });
     const columnId = columnRef.id;
     const tasksCollectionRef = collection(db, 'boards', boardId, 'columns', columnId, 'tasks');
     const taskRef = await addDoc(tasksCollectionRef, postData);
 
-    return { id: columnRef.id, tasks: [{ id: taskRef.id, ...postData }] };
+    return { id: columnRef.id, title, tasks: [{ id: taskRef.id, ...postData }] };
   }
 );
 
 export const updateColumn = createAsyncThunk(
   "column/updateColumn",
-  async ({postdata, columnId, boardId}:  any) => {
+  async ({ postdata, columnId, boardId }: any) => {
     const columnDocRef = doc(db, 'boards', boardId, 'columns', columnId);
     await updateDoc(columnDocRef, postdata);
     return { id: columnId, ...postdata };
@@ -54,7 +54,7 @@ export const updateColumn = createAsyncThunk(
 
 export const deleteColumn = createAsyncThunk(
   "column/deleteColumn",
-  async ({ columnId, boardId }:any) => {
+  async ({ columnId, boardId }: any) => {
     const columnDocRef = doc(db, 'boards', boardId, 'columns', columnId);
     await deleteDoc(columnDocRef);
     return columnId;
@@ -69,6 +69,16 @@ const columnSlice = createSlice({
   extraReducers: {
     [createColumn.fulfilled as any]: (state, action) => {
       state.push(action.payload);
+    },
+    [fetchColumns.fulfilled as any]: (state, action) => {
+      return action.payload
+    },
+    [updateColumn.fulfilled as any]: (state, action) => {
+      const { id, ...updatedData } = action.payload;
+      const columnIndex = state.findIndex((column) => column.id === id);
+      if (columnIndex !== -1) {
+        state[columnIndex] = { id, ...updatedData };
+      }
     },
   },
 });

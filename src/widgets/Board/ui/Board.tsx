@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Board.module.css'
 import { FaPen, FaClipboardUser } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { RootState } from 'entities/redux/store/store';
 import { Boards, setBoard } from 'entities/redux/slices/boardSlice';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from 'entities/hooks/useAppDispatch';
 import { useNavigate } from 'react-router-dom';
-
+import { fetchBoards } from 'entities/redux/slices/boardsSlice';
+import { Link } from 'react-router-dom';
 
 
 const Board: React.FC = () => {
@@ -17,20 +18,34 @@ const Board: React.FC = () => {
     const [isTitleOpen, setIsTitleOpen] = useState<boolean>(false)
 
 
+
     const myBoard = useSelector((state: RootState) => {
         return state.board.boardList
     })
 
-    const dispatch = useDispatch()
+    const allBoards = useSelector((state: RootState) => {
+        return state.boards
+    })
+
+
+
+
+    const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
 
+    useEffect(() => {
+        dispatch(fetchBoards());
+    }, [dispatch]);
+
+    console.log(allBoards);
+
+    
 
     const hanldeNewBoard = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const addedBoard: string = event.target.value.trim()
         if (addedBoard !== "") { setNewBoard(addedBoard) }
     }
-
     const getRandomColor = (): string => {
 
         const randomNumber = () => Math.floor(Math.random() * 256);
@@ -94,7 +109,23 @@ const Board: React.FC = () => {
 
                     <div className={styles.boardList}>
                         <ul>
-                            {myBoard.map((item: Boards, index: number) => {
+                            {allBoards.map((column: any, id: any) => {
+                                return (
+                                    <li key={column.id}>
+                                        <Link to={`/article/${column.id}`}>
+                                            <button
+                                                className={styles.boardBodyButton}
+                                            >   <span>{id}</span>
+                                            </button>
+                                        </Link>
+
+
+                                    </li>
+                                )
+                            })
+
+
+                            /* {myBoard.map((item: Boards, index: number) => {
                                 return (
                                     <li key={index}>
                                         <button style={{ backgroundColor: item.color }}
@@ -104,7 +135,8 @@ const Board: React.FC = () => {
                                         </button>
                                     </li>
                                 )
-                            })}
+                            })} */}
+
                             {isBoardOpen ? (
                                 <div className={styles.inputContainer}>
                                     <input className={styles.inputField}

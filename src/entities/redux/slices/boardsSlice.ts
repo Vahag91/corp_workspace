@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDoc, collection, doc, getDoc,getDocs } from "@firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "@firebase/firestore";
 import { db } from "entities/firebase/firebaseConfig";
 import { Column } from "./columnSlice";
 
@@ -8,10 +8,7 @@ export interface Board {
     columns: Column[]
 }
 
-const initialState: Board[] = [
-
-]
-
+const initialState: Board[] = [];
 
 export const createBoard = createAsyncThunk(
 
@@ -34,27 +31,47 @@ export const createBoard = createAsyncThunk(
 export const fetchBoard = createAsyncThunk(
     "boards/fetchBoard",
     async (boardId: any) => {
-      const boardDocRef = doc(db, 'boards', boardId);
-      const boardSnapshot = await getDoc(boardDocRef);
-  
-      if (boardSnapshot.exists()) {
-        const boardData = boardSnapshot.data();
-  
-        const columnsCollectionRef = collection(db, 'boards', boardId, 'columns');
-        const columnsSnapshot = await getDocs(columnsCollectionRef);
-  
-        const columns = columnsSnapshot.docs.map((columnDoc) => {
-          const columnId = columnDoc.id;
-          const columnData = columnDoc.data();
-  
-          return { id: columnId, ...columnData };
+        const boardDocRef = doc(db, 'boards', boardId);
+        const boardSnapshot = await getDoc(boardDocRef);
+
+        if (boardSnapshot.exists()) {
+            const boardData = boardSnapshot.data();
+
+            const columnsCollectionRef = collection(db, 'boards', boardId, 'columns');
+            const columnsSnapshot = await getDocs(columnsCollectionRef);
+
+            const columns = columnsSnapshot.docs.map((columnDoc) => {
+                const columnId = columnDoc.id;
+                const columnData = columnDoc.data();
+
+                return { id: columnId, ...columnData };
+            });
+
+            return { id: boardId, columns, ...boardData };
+        } else {
+            throw new Error("Board is missing");
+        }
+    }
+);
+
+
+export const fetchBoards = createAsyncThunk(
+    "boards/fetchBoards",
+    async () => {
+
+        const boardsCollectionRef = collection(db, 'boards');
+        const boardsSnapshot = await getDocs(boardsCollectionRef);
+
+        const boards = boardsSnapshot.docs.map((boardDoc) => {
+            const boardId = boardDoc.id;
+            const boardData = boardDoc.data();
+
+            return { id: boardId, ...boardData };
         });
-  
-        return { id: boardId, columns, ...boardData };
-      }
-   }
-  );
-  
+
+        return boards;
+    }
+);
 
 
 
@@ -66,8 +83,21 @@ export const boardsSlice = createSlice({
         [createBoard.fulfilled as any]: (state, action) => {
             state.push(action.payload);
         },
+
         [fetchBoard.fulfilled as any]: (state, action) => {
-            state.push(action.payload);
+            const [id, ...data] = action.payload
+            const existingId = state.findIndex(board => board.id === id);
+            if (existingId !== -1) {
+
+                state[existingId] = action.payload;
+            } else {
+
+                state.push(action.payload);
+            }
+
+        },
+        [fetchBoards.fulfilled as any]: (state, action) => {
+            return action.payload;
         },
     }
 })

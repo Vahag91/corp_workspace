@@ -1,158 +1,219 @@
 
-import React, { ReactNode, useState } from "react"
+import React, { useState } from "react"
 import styles from './TodoCardList.module.css'
 import { FaRegSun, FaPen, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
-import { useDispatch } from "react-redux";
-import { setCard, setColumn } from "entities/redux/slices/todoCardSlice";
+import { useParams } from "react-router-dom";
+import { useAppDispatch } from "entities/hooks/useAppDispatch";
+import { createColumn, updateColumn } from "entities/redux/slices/columnSlice";
 
+import { createTask } from "entities/redux/slices/taskSlice";
 
 
 const TodoCardList: React.FC = () => {
 
-  const [taskContent, setTaskContent] = useState<string>("")
-  const [isTaskCardOpen, setIsTaskCardOpen] = useState<boolean>(false)
 
-  const myColumns = useSelector((state: RootState) => {
-    return state.todo
+  const { id } = useParams<{ id: string }>()
+  const [title, setTitle] = useState<string>("")
+  const [isColumnInputOpen, setIsColumnInputOpen] = useState<boolean>(false)
+  const [taskDescription, setTaskDescription] = useState<string>("")
+  const [activeColumnId, setActiveColumnId] = useState<string | null>(null)
+
+
+  const allColumns = useSelector((state: RootState) => {
+    return state.column
   })
 
 
-  const onDragEnd = () => {
-
+  const postData = {
+    author: "f",
+    description: "f",
+    title: "f",
   }
 
+  const dispatch = useAppDispatch()
 
+  const onDragEnd = (result: any) => {
+    const { source, destination } = result;
 
-  const dispatch = useDispatch()
-
-  const handleChange = () => {
-    const id = "col" + Math.floor(Math.random() * 10000)
-
-    const newColumn = {
-      id,
-      title: "Todo",
-      cards: []
+    if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+      return;
     }
-    dispatch(setColumn(newColumn))
 
+    const sourceColumn = allColumns.find((column) => column.id === source.droppableId);
+    const destinationColumn = allColumns.find((column) => column.id === destination.droppableId);
 
-  }
-
-
-  const handleAddTask = (columnId: string, newContent: string): void => {
-    if (newContent === "") {
-      setIsTaskCardOpen(false)
-      return
+    if (!sourceColumn || !destinationColumn) {
+      return;
     }
-    const cards = { id: "2", content: newContent }
-    setIsTaskCardOpen(false)
-    dispatch(setCard({ columnId, card: cards }))
-    setTaskContent("")
+    const movedTask = sourceColumn.tasks[source.index];
+
+    const updatedSourceColumn = {
+      ...sourceColumn,
+      tasks: sourceColumn.tasks.filter((task) => task.id !== movedTask.id),
+    };
+
+    const updatedDestinationColumn = {
+      ...destinationColumn,
+      tasks: [
+        ...destinationColumn.tasks.slice(0, destination.index),
+        movedTask,
+        ...destinationColumn.tasks.slice(destination.index),
+      ],
+    };
+
+    dispatch(updateColumn([updatedSourceColumn, updatedDestinationColumn]) as any);
+  };
+
+  const handlenewColumn = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const addedColumn: string = event.target.value.trim()
+    if (addedColumn !== "") {
+      setTitle(addedColumn)
+    }
   }
 
-  const handleEditTask = () => {
-    setIsTaskCardOpen(true)
+  const handleColumnUpdate = () => {
+    if (title) {
+      dispatch(createColumn({ postData, boardId, title }))
+    }
+    setTitle("")
+    setIsColumnInputOpen(false)
   }
 
 
 
-  return (
+  const handleNewtask = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const addedTask: string = event.target.value
+    if (addedTask !== "") {
+      setTaskDescription(addedTask)
+    }
+  }
+
+
+  const handleTaskUpdate = () => {
+    if (taskDescription && activeColumnId) {
+      const postData = {
+        id: "",
+        author: "",
+        description: taskDescription,
+        title: ""
+      };
+      dispatch(createTask({ postData, boardId, columnId: activeColumnId }));
+    }
+    setTaskDescription("");
+    setActiveColumnId(null);
+  };
+
+
+  const handleEditTask = (columnId: string) => {
+    setActiveColumnId(columnId);
+  }
+
+  const boardId = id
+
+
+
+
+
+    return (
+
     <div className={styles.mainBoard}>
-
-
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="5">
-          {
-            (provided) => (
+        {allColumns.map((column) => (
+          <Droppable key={column.id} droppableId={column.id}>
+            {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={styles.mainDiv}>
+                className={styles.mainDiv} >
+                <li className={styles.todoCard}>
+                  <div className={styles.todo}>
+                    <div className={styles.title}>
+                      <h2>{column.title}</h2>
+                      <button> <FaRegSun /></button>
+                    </div>
 
-                {myColumns.columns.map((item, index): ReactNode => {
-                  return (
-                    <Draggable key={item.id} draggableId={item.id} index={index}>
-                      {
-                        (provided) => {
-                          return (
+                    <ol className={styles.list}>
+                      {column.tasks.map((task, index) => (
+                        <Draggable
+                          key={task.id}
+                          draggableId={task.id}
+                          index={index}
+                        >
+                          {(provided) => (
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              {...provided.dragHandleProps}>
-                              <li className={styles.todoCard}>
-                                <div className={styles.todo}>
-
-                                  <div className={styles.title}>
-                                    <h2> {item.title} </h2>
-                                    <button> <FaRegSun /></button>
-                                  </div>
-
-                                  <Droppable droppableId="5">
-                                    {(provided) => (
-                                      <div ref={provided.innerRef} {...provided.droppableProps} className={styles.mainDiv}>
-                                        <ol className={styles.list}>
-                                          {item.cards.map((card, index): ReactNode => {
-                                            return (
-                                              <li key={index}>
-                                                <span> {card.content}</span>
-                                                <button> <FaPen /> </button>
-                                              </li>
-                                            );
-                                          })}
-
-
-                                        </ol>
-                                      </div>
-                                    )}
-                                  </Droppable>
-
-                                </div>
-
-                                <div className={styles.addBtn}>
-                                  {isTaskCardOpen ? (
-                                    <div className={styles.addBtnInput}>
-                                      <input
-                                        type="text"
-                                        name="tast"
-                                        id="tast"
-                                        value={taskContent}
-                                        onChange={(event) => setTaskContent(event.target.value)} />
-                                      <button onClick={() => { handleAddTask(item.id, taskContent) }}>Save</button>
-                                    </div>
-                                  ) : (
-                                    <>
-                                      <button onClick={handleEditTask}> <FaPlus /> <span>Add Card</span></button>
-                                      <button><FaCanadianMapleLeaf /> </button>
-                                    </>
-                                  )}
-
-                                </div>
+                              {...provided.dragHandleProps}
+                            >
+                              <li>
+                                <span>{task.description}</span>
+                                <button> <FaPen /> </button>
                               </li>
                             </div>
-                          )
-                        }
-                      }
+                          )}
+                        </Draggable>
+                      ))}
+                    </ol>
+                    {provided.placeholder}
+                  </div>
 
-                    </Draggable>)
-                })
 
-                }
 
+
+                  <div className={styles.addBtn}>
+                    {activeColumnId === column.id ? (
+                      <div className={styles.addBtnInput}>
+                        <input
+                          type="text"
+                          name="tast"
+                          id="tast"
+                          value={taskDescription}
+                          onChange={handleNewtask}
+                        />
+                        <button
+                          onClick={handleTaskUpdate}
+                        >
+                          Save
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEditTask(column.id)}>
+                          <FaPlus /> <span>Add Card</span>
+                        </button>
+                        <button>
+                          <FaCanadianMapleLeaf />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </li>
               </div>
-            )
-          }
-
-        </Droppable>
-
+            )}
+          </Droppable >
+        ))}
       </DragDropContext >
 
-      <button className={styles.addCardBtn} onClick={handleChange}> <span><FaPlus /> Add Card</span></button>
 
 
-    </div>
+      {isColumnInputOpen ? (
+        <div>
+          <input type="text"
+            value={title}
+            onChange={handlenewColumn} />
+          <button onClick={handleColumnUpdate}> click</button>
+        </div>
+      ) : (<div>
+        < button
+          className={styles.addCardBtn}
+          onClick={() => setIsColumnInputOpen(true)}> <span><FaPlus /> Add Card</span></button >
+      </div>)}
+
+
+    </div >
   )
 }
 
