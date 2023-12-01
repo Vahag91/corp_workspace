@@ -1,23 +1,31 @@
 import styles from './UserSidebar.module.css'
 import { useSelector } from 'react-redux'
 import { RootState } from 'entities/redux/store/store'
-
-
+import { signOut } from 'firebase/auth'
+import { auth } from 'entities/firebase/firebaseConfig'
+import { useDispatch } from 'react-redux'
+import { deleteUser } from 'entities/redux/slices/userInfoSlice'
 
 const UserSidebar: React.FC = () => {
 
-  
+
     const users = useSelector((state: RootState) => {
         return state.users
     })
 
+    const dispatch = useDispatch()
+    const handleSignOut = () => {
+        signOut(auth).catch(err => console.log(err));
+        localStorage.removeItem("accessToken")
+        dispatch(deleteUser())
 
+    };
 
 
 
     return (
         <div className={styles.userSidebar}>
-            {users.profile && users.profile.displayName  ? (
+            {users.profile && users.profile.displayName ? (
                 <>
                     <div className={styles.userInfo}>
                         <span> {users.profile.displayName}</span>
@@ -34,7 +42,7 @@ const UserSidebar: React.FC = () => {
                             <li> Managa Account</li>
                             <li> Cards </li>
                             <li>
-                                <button type='button'> Log Out</button>
+                                <button type='button' onClick={handleSignOut}> Log Out</button>
                             </li>
                         </ul>
                     </div>

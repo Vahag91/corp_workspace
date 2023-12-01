@@ -17,7 +17,7 @@ const BoardPage: React.FC = () => {
 
 
     useEffect(() => {
-        if (!users?.photoURL) {
+        if (!localStorage.getItem("accessToken")) {
             navigate("/login")
         }
     }, [users, navigate])

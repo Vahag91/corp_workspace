@@ -19,8 +19,8 @@ const UserProfile: React.FC = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!users.profile || !users.profile.photoURL) {
-            navigate('/login');
+        if (!localStorage.getItem("accessToken")) {
+            navigate("/login")
         }
     }, [users, navigate])
 

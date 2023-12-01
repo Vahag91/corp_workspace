@@ -16,14 +16,14 @@ export interface UserState {
     isLogged: boolean,
     error: string | null,
     profile: User | null,
-  
+
 }
 
 const initialState: UserState = {
     isLogged: false,
     error: null,
     profile: null,
-  
+
 }
 
 
@@ -32,7 +32,14 @@ const initialState: UserState = {
 const userInfoSlice = createSlice({
     name: "users",
     initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state, action) => {
+            state.profile = action.payload
+        },
+        deleteUser: (state) => {
+            state.profile = null
+        }
+    },
 
 
     extraReducers: {
@@ -64,7 +71,7 @@ const userInfoSlice = createSlice({
 })
 
 
-
+export const { setUser,deleteUser } = userInfoSlice.actions;
 export default userInfoSlice.reducer
 
 

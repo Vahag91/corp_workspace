@@ -6,6 +6,8 @@ import Header from "widgets/Header"
 import Loading from "features/Loading"
 import { useSelector } from "react-redux"
 import { RootState } from "entities/redux/store/store"
+import { setUser } from "entities/redux/slices/userInfoSlice"
+import { useDispatch } from "react-redux"
 
 const RegistrationPage = lazy(() => import('pages/RegistrationPage'))
 const WorkspacePage = lazy(() => import('pages/WorkspacePage'))
@@ -20,23 +22,25 @@ const App: React.FC = () => {
 
   const users = useSelector((state: RootState) => {
     return state.users
-})
+  })
 
-
+  const dispatch = useDispatch()
   useEffect(() => {
 
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-        if (currentUser) {
-        
-          
-            const accessToken = await currentUser.getIdToken();
-            localStorage.setItem('accessToken', accessToken);
-            console.log(localStorage.getItem("accessToken"));
-            
- } 
+      if (currentUser) {
+
+
+        const accessToken = await currentUser.getIdToken();
+        localStorage.setItem('accessToken', accessToken);
+        const { displayName, email, photoURL } = currentUser
+        dispatch(setUser({ displayName, email, photoURL }))
+        console.log(users);
+
+      }
     });
     return unsubscribe;
-}, [users]);
+  }, [dispatch]);
 
 
   // const handleSignOut = () => {
