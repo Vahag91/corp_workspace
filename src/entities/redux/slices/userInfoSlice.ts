@@ -7,7 +7,7 @@ import { loginWithGoogle } from "entities/redux/thunk/loginWithGoogle";
 export interface User {
     displayName: string | null,
     email: string | null,
-    photoURL: string | null,
+    photoURL?: string | null,
 
 }
 
@@ -35,6 +35,16 @@ const userInfoSlice = createSlice({
     reducers: {
         setUser: (state, action) => {
             state.profile = action.payload
+        },
+        setUserWithLogin: (state, action) => {
+           const {email,displayName} = action.payload
+           if (state.profile) {
+            state.profile = {
+                ...state.profile,
+                email,
+                displayName,
+            };
+        }
         },
         deleteUser: (state) => {
             state.profile = null
@@ -73,22 +83,4 @@ const userInfoSlice = createSlice({
 
 export const { setUser,deleteUser } = userInfoSlice.actions;
 export default userInfoSlice.reducer
-
-
-
-// export const fetchUser = createAsyncThunk(
-//     'users/fetchPosts',
-//     async () => {
-//         const querySnapshot = await getDocs(collection(db, 'users'))
-//         return querySnapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }))
-//     }
-// );
-
-// export const createUser = createAsyncThunk(
-//     'users/createUser',
-//     async (data: any) => {
-//         const docRef = await addDoc(collection(db, 'users'), data)
-//         return { id: docRef.id, ...data }
-//     }
-// );
 

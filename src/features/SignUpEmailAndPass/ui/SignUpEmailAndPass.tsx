@@ -1,7 +1,11 @@
 import { FaPaperPlane, FaLock } from "react-icons/fa6";
 import { validateEmail, validatePassword } from 'utils/validate';
 import styles from './SignUpEmailAndPass.module.css'
-
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "entities/firebase/firebaseConfig";
+import { useDispatch } from "react-redux";
+import { setUser } from "entities/redux/slices/userInfoSlice";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,22 +13,26 @@ const SignUpEmailAndPass: React.FC = () => {
 
     let displayName = ""
     let email = ""
-    let photoURL = "" // parior
+    let userName = ""
 
-
-
-    const handleSignIn = (): void => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const handleSignIn = async () => {
 
         if (!validateEmail(email)) {
             return
         }
-
         if (!validatePassword(displayName)) {
             return
         }
-
-   
-      
+        try{
+            await createUserWithEmailAndPassword(auth, email, displayName)
+        } catch(err){
+            console.log(err,"Could not Sign Up");
+        }
+     
+        dispatch(setUser({ displayName, email }))
+        navigate('/board')
     }
 
 
@@ -54,7 +62,7 @@ const SignUpEmailAndPass: React.FC = () => {
                     type="password"
                     name="password"
                     placeholder="password"
-                    onChange={(e) => photoURL = e.target.value}
+                    onChange={(e) => userName = e.target.value}
                 />
                 <span> <FaLock /> </span>
             </div>

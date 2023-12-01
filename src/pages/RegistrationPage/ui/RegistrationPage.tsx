@@ -10,13 +10,11 @@ const RegistrationPage: React.FC = () => {
 
 
 
-    
+
     return (
 
         <div className={styles.container}>
-
             <div className={styles.card}>
-
                 <div>
 
                     <h2> Register</h2>
@@ -36,12 +34,6 @@ const RegistrationPage: React.FC = () => {
                 </div>
             </div>
         </div>
-
-        /* <p>Forgot password? <Link to="#">Click Here!</Link></p> */
-        // <SignInGithub/>
-        // <SignInGoogle/>
-
-
     )
 }
 

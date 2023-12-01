@@ -1,4 +1,4 @@
-import boardReducer from '../slices/boardSlice'
+
 import todoReducer from '../slices/todoCardSlice'
 import { configureStore } from "@reduxjs/toolkit"
 import userInfoSlice from '../slices/userInfoSlice';
@@ -11,7 +11,6 @@ export const store = configureStore({
         boards: boardsSlice,
         column: columnSlice,
         tasks: taskSlice,
-        board: boardReducer,
         todo: todoReducer,
         users: userInfoSlice
     },

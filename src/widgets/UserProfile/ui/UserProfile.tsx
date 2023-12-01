@@ -3,8 +3,7 @@ import styles from './UserProfile.module.css'
 import { useSelector } from "react-redux"
 import { RootState } from "entities/redux/store/store"
 import { useNavigate } from "react-router-dom"
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "entities/firebase/firebaseConfig"
+
 
 const UserProfile: React.FC = () => {
 

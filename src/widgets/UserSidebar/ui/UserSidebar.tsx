@@ -5,6 +5,8 @@ import { signOut } from 'firebase/auth'
 import { auth } from 'entities/firebase/firebaseConfig'
 import { useDispatch } from 'react-redux'
 import { deleteUser } from 'entities/redux/slices/userInfoSlice'
+import { Link } from 'react-router-dom'
+
 
 const UserSidebar: React.FC = () => {
 
@@ -39,8 +41,8 @@ const UserSidebar: React.FC = () => {
 
                     <div className={styles.userSettings}>
                         <ul>
-                            <li> Managa Account</li>
-                            <li> Cards </li>
+                            <li> <Link to="/user"> Managa Account</Link> </li>
+                            <li> <Link to="/board"> Boards</Link> </li>
                             <li>
                                 <button type='button' onClick={handleSignOut}> Log Out</button>
                             </li>

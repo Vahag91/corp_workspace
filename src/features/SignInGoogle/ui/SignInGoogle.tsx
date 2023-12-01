@@ -18,21 +18,6 @@ const SignInGoogle: React.FC = () => {
     }
 
 
-
-
-    // const signInGoogle = async () => {
-    //     const provider = new GoogleAuthProvider()
-
-    //     try {
-    //         await signInWithPopup(auth, provider)
-    //         dispatch(setIsLogged(true))
-    //     } catch (err) {
-    //         console.log(err,);
-
-    //     }
-    // }
-
-
     return (
         <button type='button' className={styles.googleBtn} onClick={handleGoogleLogin}>
             <FaGoogle />

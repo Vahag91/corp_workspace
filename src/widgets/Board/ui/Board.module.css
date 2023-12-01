@@ -97,7 +97,7 @@
 
     width: 200px;
     height: 120px;
-    background-color: #e6e6e6;
+    background-color: rgb(35, 153, 153);
     margin-bottom: 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -113,11 +113,13 @@
     height: 100%;
     padding: 10px;
     cursor: pointer;
+    background-color: rgb(180, 130, 130);
 }
 
 .boardBodyButton span {
-    color: #d9d9d9;
-    font-size: 20px;
+   
+    color: #f5f1f1;
+    font-size: 30px;
     font-weight: bold;
 }
 

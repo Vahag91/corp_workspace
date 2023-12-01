@@ -7,9 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
-import { createColumn, fetchColumns, updateColumn } from "entities/redux/slices/columnSlice";
-
-import { createTask, fetchTask } from "entities/redux/slices/taskSlice";
+import { createColumn, fetchColumns} from "entities/redux/slices/columnSlice";
+import { createTask} from "entities/redux/slices/taskSlice";
 
 
 const TodoCardList: React.FC = () => {
@@ -26,6 +25,7 @@ const TodoCardList: React.FC = () => {
     return state.column
   })
 
+  
 
   const postData = {
     author: "f",
@@ -36,36 +36,38 @@ const TodoCardList: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const onDragEnd = (result: any) => {
-    const { source, destination } = result;
+    // const { source, destination } = result;
 
-    if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
-      return;
-    }
+    // if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) {
+    //   return;
+    // }
 
-    const sourceColumn = allColumns.find((column) => column.id === source.droppableId);
-    const destinationColumn = allColumns.find((column) => column.id === destination.droppableId);
+    // const sourceColumn = allColumns.find((column) => column.id === source.droppableId);
+    // const destinationColumn = allColumns.find((column) => column.id === destination.droppableId);
 
-    if (!sourceColumn || !destinationColumn) {
-      return;
-    }
-    const movedTask = sourceColumn.tasks[source.index];
+    // if (!sourceColumn || !destinationColumn) {
+    //   return;
+    // }
+    // const movedTask = sourceColumn.tasks[source.index];
 
-    const updatedSourceColumn = {
-      ...sourceColumn,
-      tasks: sourceColumn.tasks.filter((task) => task.id !== movedTask.id),
-    };
+    // const updatedSourceColumn = {
+    //   ...sourceColumn,
+    //   tasks: sourceColumn.tasks.filter((task) => task.id !== movedTask.id),
+    // };
 
-    const updatedDestinationColumn = {
-      ...destinationColumn,
-      tasks: [
-        ...destinationColumn.tasks.slice(0, destination.index),
-        movedTask,
-        ...destinationColumn.tasks.slice(destination.index),
-      ],
-    };
+    // const updatedDestinationColumn = {
+    //   ...destinationColumn,
+    //   tasks: [
+    //     ...destinationColumn.tasks.slice(0, destination.index),
+    //     movedTask,
+    //     ...destinationColumn.tasks.slice(destination.index),
+    //   ],
+    // };
 
-    dispatch(updateColumn([updatedSourceColumn, updatedDestinationColumn]) as any);
+    // dispatch(updateColumn([updatedSourceColumn, updatedDestinationColumn]) as any);
   };
+
+
 
   const handlenewColumn = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const addedColumn: string = event.target.value.trim()
@@ -122,7 +124,7 @@ useEffect(()=>{
     console.log(allColumns);
     
   }
-},[dispatch,boardId])
+},[dispatch,boardId,allColumns])
 
 
 
@@ -209,11 +211,11 @@ useEffect(()=>{
 
 
       {isColumnInputOpen ? (
-        <div>
+        <div className={styles.addColumnInput}>
           <input type="text"
             value={title}
             onChange={handlenewColumn} />
-          <button onClick={handleColumnUpdate}> click</button>
+          <button onClick={handleColumnUpdate}> Save</button>
         </div>
       ) : (<div>
         < button

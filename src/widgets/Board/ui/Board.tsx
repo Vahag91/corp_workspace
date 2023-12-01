@@ -3,76 +3,65 @@ import styles from './Board.module.css'
 import { FaPen, FaClipboardUser } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { RootState } from 'entities/redux/store/store';
-import { Boards, setBoard } from 'entities/redux/slices/boardSlice';
 import { useAppDispatch } from 'entities/hooks/useAppDispatch';
-import { useNavigate } from 'react-router-dom';
-import { fetchBoards } from 'entities/redux/slices/boardsSlice';
+import { createBoard, fetchBoards } from 'entities/redux/slices/boardsSlice';
 import { Link } from 'react-router-dom';
 
 
 const Board: React.FC = () => {
 
     const [title, setTitle] = useState<string>(" Working place Trello")
-    const [newBoard, setNewBoard] = useState<string>("")
-    const [isBoardOpen, setIsBoardOpen] = useState<boolean>(false)
     const [isTitleOpen, setIsTitleOpen] = useState<boolean>(false)
 
+    const [newBoard, setNewBoard] = useState<string>("")
+    const [isBoardOpen, setIsBoardOpen] = useState<boolean>(false)
 
 
-    const myBoard = useSelector((state: RootState) => {
-        return state.board.boardList
-    })
+
+    const postData = {
+        author: "",
+        description: "",
+        title: "",
+    }
 
     const allBoards = useSelector((state: RootState) => {
         return state.boards
     })
 
-
-
-
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
 
 
     useEffect(() => {
         dispatch(fetchBoards());
     }, [dispatch]);
 
-    console.log(allBoards);
 
-    
 
     const hanldeNewBoard = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const addedBoard: string = event.target.value.trim()
         if (addedBoard !== "") { setNewBoard(addedBoard) }
     }
-    const getRandomColor = (): string => {
 
-        const randomNumber = () => Math.floor(Math.random() * 256);
-        const red = randomNumber();
-        const green = randomNumber();
-        const blue = randomNumber();
 
-        return `rgb(${red}, ${green}, ${blue})`;
-    };
 
-    const handleChangeInput = (): void => {
-        const randomColor = getRandomColor()
+    const handleChangeBoard = () => {
+
         if (newBoard) {
-            dispatch(setBoard({ name: newBoard, color: randomColor }));
+            dispatch(createBoard(postData));
         }
         setNewBoard("")
         setIsBoardOpen(!isBoardOpen)
     }
+
+
+
 
     const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const newTitle: string = event.target.value
         setTitle(newTitle)
     }
 
-    const handleNavigate = (): void => {
-        navigate('/workspace')
-    }
+
 
     return (
 
@@ -115,27 +104,13 @@ const Board: React.FC = () => {
                                         <Link to={`/article/${column.id}`}>
                                             <button
                                                 className={styles.boardBodyButton}
-                                            >   <span>{id}</span>
+
+                                            >   <span>{id+1}</span>
                                             </button>
                                         </Link>
-
-
                                     </li>
                                 )
-                            })
-
-
-                            /* {myBoard.map((item: Boards, index: number) => {
-                                return (
-                                    <li key={index}>
-                                        <button style={{ backgroundColor: item.color }}
-                                            className={styles.boardBodyButton}
-                                            onClick={handleNavigate}>
-                                            <span>{item.name}</span>
-                                        </button>
-                                    </li>
-                                )
-                            })} */}
+                            })}
 
                             {isBoardOpen ? (
                                 <div className={styles.inputContainer}>
@@ -145,12 +120,12 @@ const Board: React.FC = () => {
                                         value={newBoard}
                                         onChange={hanldeNewBoard}
                                     />
-                                    <button className={styles.addButton} onClick={handleChangeInput}>
+                                    <button className={styles.addButton} onClick={handleChangeBoard}>
                                         Save
                                     </button>
                                 </div>
                             ) : (
-                                <button className={styles.addBoardBtn} onClick={handleChangeInput} >
+                                <button className={styles.addBoardBtn} onClick={handleChangeBoard} >
                                     <span className={styles.boardAddBtn}> Create New Board</span>
                                 </button>
                             )}

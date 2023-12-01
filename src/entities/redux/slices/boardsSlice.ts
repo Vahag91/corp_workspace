@@ -4,7 +4,7 @@ import { db } from "entities/firebase/firebaseConfig";
 import { Column } from "./columnSlice";
 
 export interface Board {
-    id: string
+    id: string,
     columns: Column[]
 }
 
@@ -85,7 +85,7 @@ export const boardsSlice = createSlice({
         },
 
         [fetchBoard.fulfilled as any]: (state, action) => {
-            const [id, ...data] = action.payload
+            const [id] = action.payload
             const existingId = state.findIndex(board => board.id === id);
             if (existingId !== -1) {
 
