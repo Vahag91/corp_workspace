@@ -1,7 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styles from './UserProfile.module.css'
 import { useSelector } from "react-redux"
 import { RootState } from "entities/redux/store/store"
+import { useNavigate } from "react-router-dom"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "entities/firebase/firebaseConfig"
 
 const UserProfile: React.FC = () => {
 
@@ -9,6 +12,17 @@ const UserProfile: React.FC = () => {
         return state.users
     })
 
+
+
+  
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!users.profile || !users.profile.photoURL) {
+            navigate('/login');
+        }
+    }, [users, navigate])
 
 
     return (

@@ -1,10 +1,11 @@
-import React, { lazy, Suspense} from "react"
+import React, { lazy, Suspense, useEffect } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-
-
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "entities/firebase/firebaseConfig"
 import Header from "widgets/Header"
 import Loading from "features/Loading"
-
+import { useSelector } from "react-redux"
+import { RootState } from "entities/redux/store/store"
 
 const RegistrationPage = lazy(() => import('pages/RegistrationPage'))
 const WorkspacePage = lazy(() => import('pages/WorkspacePage'))
@@ -17,19 +18,26 @@ const BoardPage = lazy(() => import('pages/BoardPage'))
 
 const App: React.FC = () => {
 
+  const users = useSelector((state: RootState) => {
+    return state.users
+})
 
 
+  useEffect(() => {
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, currentUser => {
-  //     if (currentUser) {
-  //       dispatch(setEmail(currentUser.email))
-  //       dispatch(setUsername(currentUser.displayName))
-  //       dispatch(setUserPhotoUrl(currentUser.photoURL))
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, [dispatch]);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+        
+          
+            const accessToken = await currentUser.getIdToken();
+            localStorage.setItem('accessToken', accessToken);
+            console.log(localStorage.getItem("accessToken"));
+            
+ } 
+    });
+    return unsubscribe;
+}, [users]);
+
 
   // const handleSignOut = () => {
   //     signOut(auth).catch(err => console.log(err));
@@ -40,8 +48,6 @@ const App: React.FC = () => {
     <BrowserRouter>
       <div>
         <Suspense fallback={<Loading />}>
-
-
           <Header />
           <Routes>
             <Route path="/" element={<BoardPage />} />

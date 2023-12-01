@@ -12,11 +12,13 @@ const loginWithGoogle = createAsyncThunk(
 
             const provider = new GoogleAuthProvider()
             const result = await signInWithPopup(auth, provider)
-
+          
             const userData: User = {
                 displayName: result.user.displayName,
                 email: result.user.email,
-                photoURL: result.user.photoURL
+                photoURL: result.user.photoURL,
+             
+               
             }
 
             return userData

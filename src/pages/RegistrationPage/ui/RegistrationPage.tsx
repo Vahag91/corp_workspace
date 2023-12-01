@@ -7,6 +7,10 @@ import styles from './RegistrationPage.module.css'
 
 const RegistrationPage: React.FC = () => {
 
+
+
+
+    
     return (
 
         <div className={styles.container}>

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react"
+import React, { useState,useEffect} from "react"
 import styles from './TodoCardList.module.css'
 import { FaRegSun, FaPen, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
-import { createColumn, updateColumn } from "entities/redux/slices/columnSlice";
+import { createColumn, fetchColumns, updateColumn } from "entities/redux/slices/columnSlice";
 
-import { createTask } from "entities/redux/slices/taskSlice";
+import { createTask, fetchTask } from "entities/redux/slices/taskSlice";
 
 
 const TodoCardList: React.FC = () => {
@@ -101,6 +101,7 @@ const TodoCardList: React.FC = () => {
         title: ""
       };
       dispatch(createTask({ postData, boardId, columnId: activeColumnId }));
+   
     }
     setTaskDescription("");
     setActiveColumnId(null);
@@ -113,7 +114,15 @@ const TodoCardList: React.FC = () => {
 
   const boardId = id
 
+useEffect(()=>{
 
+
+  if(boardId){
+    dispatch(fetchColumns(boardId))
+    console.log(allColumns);
+    
+  }
+},[dispatch,boardId])
 
 
 
@@ -136,7 +145,7 @@ const TodoCardList: React.FC = () => {
                     </div>
 
                     <ol className={styles.list}>
-                      {column.tasks.map((task, index) => (
+                      {column.tasks && column.tasks.map((task, index) => (
                         <Draggable
                           key={task.id}
                           draggableId={task.id}

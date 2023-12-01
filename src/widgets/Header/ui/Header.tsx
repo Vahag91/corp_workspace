@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from './Header.module.css';
 import { FaSistrix, FaList, FaClipboardUser, FaRegBell, FaRegCircleQuestion } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import UserSidebar from "widgets/UserSidebar";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "entities/hooks/useAppDispatch";
-import { createTask, } from "entities/redux/slices/taskSlice";
-import { createBoard, fetchBoard } from "entities/redux/slices/boardsSlice";
-import { createColumn } from "entities/redux/slices/columnSlice";
 
 const Header: React.FC = () => {
 
@@ -17,77 +12,35 @@ const Header: React.FC = () => {
         return state.users
     })
 
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!user.profile || !user.profile.displayName) {
-            navigate('/login');
-        }
-     
-        // console.log(columns, "columns");
-        // console.log(tasks);
-    ;
-
-
-    }, [user, navigate])
-
-  
-
-    const postData = {
-        author: "appaaaaaa",
-        description: "vahagagaga",
-        title: "vahagaaaaaaa"
-    }
-
-    const boardId = 'TbyrSwC7wgzGTu6nBWtw'
-    const columnId = "KldArXXsstx9ierB9oUU"
-
-    const boards = useSelector((state: RootState) => {
-        return state.boards
-    })
-    const columns = useSelector((state: RootState) => {
-        return state.column
-    })
-    const tasks = useSelector((state: RootState) => {
-        return state.tasks
-    })
-
-  
-
-    const dispatch = useAppDispatch()
-    // useEffect(()=>{
-    //     dispatch(createTask(obj))
-    //     dispatch(createColumn(objarr))
-    // }, [dispatch])
-
-
-    // const userdata = useSelector((state: any) => {
-    //     return state.users
-    // })
-
-
-    // const dispatch = useAppDispatch()
-
-    // useEffect(() => {
-    //     dispatch(createUser(userdata))
-    // }, [dispatch, userdata])
-
 
     const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false)
 
 
-    const handleUserMenuOpeb = (): void => {
+    const handleUserMenuOpen = (): void => {
         setUserMenuOpen(!userMenuOpen)
     }
 
 
+    const userMenuRef = useRef<HTMLDivElement>(null);
 
+
+
+    const handleClickOutside = (event: MouseEvent): void => {
+        if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+            setUserMenuOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
     return (
         <header>
             <nav className={styles.navBar}>
-                
-                <button onClick={() => dispatch(createTask({ postData, boardId, columnId }))}> task</button>
-                <button onClick={() => dispatch(createBoard(postData))}> board</button>
+
                 <ul className={styles.navList}>
                     <li> <Link to="" className={styles.linkStyle}> <span><FaList /> </span></Link></li>
                     <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> Trello</span></Link></li>
@@ -109,7 +62,8 @@ const Header: React.FC = () => {
                             <li> <Link to=""> <span><FaRegCircleQuestion /></span></Link></li>
 
                             <li>
-                                <div className={styles.userPhoto} onClick={handleUserMenuOpeb}>
+                                <div ref={userMenuRef}
+                                    className={styles.userPhoto} onClick={handleUserMenuOpen}>
                                     {user && user.profile ? (
                                         user.profile.photoURL ? (
                                             <img src={user.profile.photoURL} alt="Userphoto" />
@@ -119,10 +73,7 @@ const Header: React.FC = () => {
                                 </div>
                             </li>
                         </ul>
-                        {userMenuOpen ? (
-                            <UserSidebar />
-                        ) : (null)}
-
+                        {userMenuOpen ? (<UserSidebar />) : null}
                     </div>
                 </div>
 
