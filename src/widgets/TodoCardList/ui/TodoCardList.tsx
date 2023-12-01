@@ -1,5 +1,5 @@
 
-import React, { useState,useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import styles from './TodoCardList.module.css'
 import { FaRegSun, FaPen, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -7,8 +7,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
-import { createColumn, fetchColumns} from "entities/redux/slices/columnSlice";
-import { createTask} from "entities/redux/slices/taskSlice";
+import { createColumn, fetchColumns } from "entities/redux/slices/columnSlice";
+import { createTask } from "entities/redux/slices/taskSlice";
+import TodoTaskList from "widgets/TodoTaskList";
 
 
 const TodoCardList: React.FC = () => {
@@ -25,13 +26,9 @@ const TodoCardList: React.FC = () => {
     return state.column
   })
 
-  
 
-  const postData = {
-    author: "f",
-    description: "f",
-    title: "f",
-  }
+
+
 
   const dispatch = useAppDispatch()
 
@@ -78,8 +75,10 @@ const TodoCardList: React.FC = () => {
 
   const handleColumnUpdate = () => {
     if (title) {
-      dispatch(createColumn({ postData, boardId, title }))
+      dispatch(createColumn({ boardId, title }))
     }
+    console.log("createColumn");
+
     setTitle("")
     setIsColumnInputOpen(false)
   }
@@ -97,13 +96,13 @@ const TodoCardList: React.FC = () => {
   const handleTaskUpdate = () => {
     if (taskDescription && activeColumnId) {
       const postData = {
-        id: "",
         author: "",
         description: taskDescription,
-        title: ""
+        title: "",
       };
       dispatch(createTask({ postData, boardId, columnId: activeColumnId }));
-   
+      console.log("createTask");
+
     }
     setTaskDescription("");
     setActiveColumnId(null);
@@ -116,19 +115,19 @@ const TodoCardList: React.FC = () => {
 
   const boardId = id
 
-useEffect(()=>{
+  useEffect(() => {
 
 
-  if(boardId){
-    dispatch(fetchColumns(boardId))
-    console.log(allColumns);
-    
-  }
-},[dispatch,boardId,allColumns])
+    if (boardId) {
+      dispatch(fetchColumns(boardId))
+      console.log(allColumns);
+
+    }
+  }, [dispatch, boardId])
 
 
 
-    return (
+  return (
 
     <div className={styles.mainBoard}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -147,26 +146,7 @@ useEffect(()=>{
                     </div>
 
                     <ol className={styles.list}>
-                      {column.tasks && column.tasks.map((task, index) => (
-                        <Draggable
-                          key={task.id}
-                          draggableId={task.id}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <li>
-                                <span>{task.description}</span>
-                                <button> <FaPen /> </button>
-                              </li>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                      <TodoTaskList key={column.id} columnId={column.id} boardId={boardId} />
                     </ol>
                     {provided.placeholder}
                   </div>

@@ -33,13 +33,12 @@ export const fetchColumns = createAsyncThunk(
 
 export const createColumn = createAsyncThunk(
   "column/createColumn",
-  async ({ postData, boardId, title }: any) => {
+  async ({ boardId, title }: any) => {
     const columnRef = await addDoc(collection(db, 'boards', boardId, 'columns'), { title });
-    const columnId = columnRef.id;
-    const tasksCollectionRef = collection(db, 'boards', boardId, 'columns', columnId, 'tasks');
-    const taskRef = await addDoc(tasksCollectionRef, postData);
-
-    return { id: columnRef.id, title, tasks: [{ id: taskRef.id, ...postData }] };
+  
+    
+   
+    return { id: columnRef.id, title, tasks: [] };
   }
 );
 

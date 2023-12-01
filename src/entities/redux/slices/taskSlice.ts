@@ -4,28 +4,27 @@ import { db } from "entities/firebase/firebaseConfig";
 import { collection, addDoc, getDocs, updateDoc,deleteDoc,doc } from "@firebase/firestore";
 
 export interface Task {
+  columnId: string;
     id: string;
     author: string;
     description: string;
     title: string;
 }
 
-const initialState: Task[] = [
- { id: "1",
-  author: "",
-  description: "",
-  title: "",
-}
-];
+const initialState: Task[] = [];
+
+
+
 
 export const createTask = createAsyncThunk(
   "tasks/createTask",
   async ({ postData, boardId, columnId }: any) => {
     const tasks = collection(db, "boards", boardId, "columns", columnId, "tasks");
     const docRef = await addDoc(tasks, postData);
-    return { id: docRef.id, columnId, ...postData };
+    return {columnId, id: docRef.id, ...postData };
   }
 );
+
 export const fetchTask = createAsyncThunk(
   "tasks/fetchTask",
   async ({ boardId, columnId }: any) => {
@@ -34,7 +33,6 @@ export const fetchTask = createAsyncThunk(
 
     const tasks = querySnapshot.docs.map((doc) => ({
       id: doc.id,
-      columnId,
       ...doc.data(),
     }));
     
@@ -72,13 +70,7 @@ const taskSlice = createSlice({
             state.push(action.payload)
         },
         [fetchTask.fulfilled as any]: (state, action) => {
-          const existsPost = state.find(
-            (post: any) => post.id === action.payload.id
-          );
-    
-          if (!existsPost) {
-            state.push(action.payload);
-          }
+          return [...state, ...action.payload];
       },
     },
 });
