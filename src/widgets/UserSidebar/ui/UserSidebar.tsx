@@ -27,6 +27,7 @@ const UserSidebar: React.FC = () => {
 
     return (
         <div className={styles.userSidebar}>
+    
             {users.profile && users.profile.displayName ? (
                 <>
                     <div className={styles.userInfo}>

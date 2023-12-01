@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react"
 import styles from './TodoCardList.module.css'
-import { FaRegSun, FaPen, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
+import { FaRegSun, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
@@ -115,13 +115,10 @@ const TodoCardList: React.FC = () => {
 
   const boardId = id
 
+
   useEffect(() => {
-
-
     if (boardId) {
       dispatch(fetchColumns(boardId))
-      console.log(allColumns);
-
     }
   }, [dispatch, boardId])
 

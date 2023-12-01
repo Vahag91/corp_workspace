@@ -1,4 +1,3 @@
-
 import { loginWithGithub } from 'entities/redux/thunk/loginWithGithub';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { loginWithGoogle } from "entities/redux/thunk/loginWithGoogle";

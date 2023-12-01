@@ -3,12 +3,6 @@ import { addDoc, collection, doc, getDoc, getDocs } from "@firebase/firestore";
 import { db } from "entities/firebase/firebaseConfig";
 import { Column } from "./columnSlice";
 
-export interface Board {
-    id: string,
-    columns: Column[]
-}
-
-const initialState: Board[] = [];
 
 export const createBoard = createAsyncThunk(
 
@@ -72,6 +66,16 @@ export const fetchBoards = createAsyncThunk(
         return boards;
     }
 );
+
+
+
+export interface Board {
+    id: string,
+    columns: Column[]
+}
+
+const initialState: Board[] = []
+
 
 
 
