@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const Board: React.FC = () => {
 
-    const [title, setTitle] = useState<string>(" Working place Trello")
+    const [title, setTitle] = useState<string>(" Working place TaskCraft")
     const [isTitleOpen, setIsTitleOpen] = useState<boolean>(false)
 
     const [newBoard, setNewBoard] = useState<string>("")

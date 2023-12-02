@@ -35,21 +35,19 @@ export const createColumn = createAsyncThunk(
   "column/createColumn",
   async ({ boardId, title }: any) => {
     const columnRef = await addDoc(collection(db, 'boards', boardId, 'columns'), { title });
-  
-    
-   
     return { id: columnRef.id, title, tasks: [] };
   }
 );
 
 export const updateColumn = createAsyncThunk(
   "column/updateColumn",
-  async ({ postdata, columnId, boardId }: any) => {
+  async ({ postData, columnId, boardId }: any) => {
     const columnDocRef = doc(db, 'boards', boardId, 'columns', columnId);
-    await updateDoc(columnDocRef, postdata);
-    return { id: columnId, ...postdata };
+    await updateDoc(columnDocRef, postData);
+    return { id: columnId, ...postData };
   }
 );
+
 
 export const deleteColumn = createAsyncThunk(
   "column/deleteColumn",

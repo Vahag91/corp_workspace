@@ -43,7 +43,7 @@ const Header: React.FC = () => {
 
                 <ul className={styles.navList}>
                     <li> <Link to="" className={styles.linkStyle}> <span><FaList /> </span></Link></li>
-                    <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> Trello</span></Link></li>
+                    <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> TaskCraft</span></Link></li>
                     <li> <Link to="/user" className={styles.linkStyle}> <span>User</span></Link></li>
                     <li> <Link to="/article/:id" className={styles.linkStyle}> <span>Workspace</span></Link></li>
                 </ul>

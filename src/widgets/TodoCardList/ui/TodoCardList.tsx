@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react"
 import styles from './TodoCardList.module.css'
 import { FaRegSun, FaPlus, FaCanadianMapleLeaf } from "react-icons/fa6"
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "entities/hooks/useAppDispatch";
-import { createColumn, fetchColumns } from "entities/redux/slices/columnSlice";
+import { createColumn, fetchColumns, updateColumn } from "entities/redux/slices/columnSlice";
 import { createTask } from "entities/redux/slices/taskSlice";
 import TodoTaskList from "widgets/TodoTaskList";
 
@@ -20,13 +20,35 @@ const TodoCardList: React.FC = () => {
   const [isColumnInputOpen, setIsColumnInputOpen] = useState<boolean>(false)
   const [taskDescription, setTaskDescription] = useState<string>("")
   const [activeColumnId, setActiveColumnId] = useState<string | null>(null)
-
+  const [selectedColumn, setSelectedColumn] = useState<boolean>(false)
+  const [selectedColumnId, setSelectedColumnId] = useState<string | null>(null);
+  const [updatedTitle, setUpdatedTitle] = useState<string>("")
 
   const allColumns = useSelector((state: RootState) => {
     return state.column
   })
 
+  const handleChangeSelectedColumn = (columnId: string) => {
+    setSelectedColumnId(columnId);
+  };
 
+  const handleChangeUpdateTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle: string = event.target.value
+    if (newTitle !== "") {
+      setUpdatedTitle(newTitle)
+    }
+  }
+
+
+  const handleUpdateColumnTitle = (columnId: string) => {
+    if(updatedTitle){
+      dispatch(updateColumn({ postData: { title: updatedTitle }, columnId, boardId }))
+    
+    }
+      setUpdatedTitle("")
+      setSelectedColumn(!selectedColumn)
+      setSelectedColumnId(null)
+  }
 
 
 
@@ -138,8 +160,24 @@ const TodoCardList: React.FC = () => {
                 <li className={styles.todoCard}>
                   <div className={styles.todo}>
                     <div className={styles.title}>
-                      <h2>{column.title}</h2>
-                      <button> <FaRegSun /></button>
+                      {selectedColumnId === column.id ? (
+                        <>
+                          <input
+                            type="text"
+                            name="column"
+                            id="column"
+                            placeholder={column.title}
+                            onChange={handleChangeUpdateTitle}
+                          />
+                          <button onClick={() => handleUpdateColumnTitle(column.id)}> click</button>
+                        </>
+                      ) : (
+                        <>
+                          <h2>{column.title}</h2>
+                          <button onClick={() => handleChangeSelectedColumn(column.id)}> <FaRegSun /></button>
+                        </>
+                      )}
+
                     </div>
 
                     <ol className={styles.list}>
@@ -156,8 +194,8 @@ const TodoCardList: React.FC = () => {
                       <div className={styles.addBtnInput}>
                         <input
                           type="text"
-                          name="tast"
-                          id="tast"
+                          name="task"
+                          id="task"
                           value={taskDescription}
                           onChange={handleNewtask}
                         />
