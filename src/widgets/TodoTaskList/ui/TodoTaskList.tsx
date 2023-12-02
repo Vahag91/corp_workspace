@@ -6,6 +6,7 @@ import { FaPen } from "react-icons/fa6"
 import { useSelector } from "react-redux"
 import { fetchTask, updateTask } from "entities/redux/slices/taskSlice"
 
+
 interface TodoTaskListProps {
     columnId: string
     boardId: string | undefined
@@ -76,15 +77,17 @@ const TodoTaskList: React.FC<TodoTaskListProps> = ({ columnId, boardId }) => {
                             >
                                 <li>
                                     {editStates[task.id] ? (
-                                        <>
+                                       <>
                                             <input
                                                 type="text"
                                                 name="description"
                                                 id="description"
                                                 value={description}
-                                                onChange={handleChangeDescription} />
-                                            <button onClick={() => handleUpdatetask(task.id)}> Save</button>
-                                        </>
+                                                onChange={handleChangeDescription} 
+                                              />
+                                            <button onClick={() => handleUpdatetask(task.id)}
+                                           > Save</button>
+                                       </>
                                     ) : (
                                         <>
                                             <span>{task.description}</span>

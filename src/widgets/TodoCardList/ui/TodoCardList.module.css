@@ -35,6 +35,9 @@
     color: #A4AFBB
 }
 
+.title input {
+    width: 80%;
+}
 .title button {
     padding: 5px 10px;
     background-color: #101204;
@@ -63,6 +66,10 @@
 
 .list li:hover {
     filter: brightness(120%);
+}
+
+.list input {
+    width: 90%;
 }
 
 .list button {

@@ -17,6 +17,8 @@ const SignUpEmailAndPass: React.FC = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    
     const handleSignIn = async () => {
 
         if (!validateEmail(email)) {
@@ -30,6 +32,7 @@ const SignUpEmailAndPass: React.FC = () => {
         } catch(err){
             console.log(err,"Could not Sign Up");
         }
+     console.log(displayName,email);
      
         dispatch(setUser({ displayName, email }))
         navigate('/board')

@@ -169,7 +169,7 @@ const TodoCardList: React.FC = () => {
                             placeholder={column.title}
                             onChange={handleChangeUpdateTitle}
                           />
-                          <button onClick={() => handleUpdateColumnTitle(column.id)}> click</button>
+                          <button onClick={() => handleUpdateColumnTitle(column.id)}> Save</button>
                         </>
                       ) : (
                         <>

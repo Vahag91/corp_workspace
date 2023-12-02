@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from './Header.module.css';
-import { FaSistrix, FaList, FaClipboardUser, FaRegBell, FaRegCircleQuestion } from "react-icons/fa6";
+import { FaSistrix, FaList, FaClipboardUser} from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { RootState } from "entities/redux/store/store";
 import UserSidebar from "widgets/UserSidebar";
+import { useDispatch } from "react-redux";
+import { signOut } from "firebase/auth";
+import { auth } from "entities/firebase/firebaseConfig";
+import { deleteUser } from "entities/redux/slices/userInfoSlice";
 
 const Header: React.FC = () => {
 
@@ -37,7 +41,21 @@ const Header: React.FC = () => {
             document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
+
+
+    const dispatch = useDispatch()
+    const handleSignOut = () => {
+        signOut(auth).catch(err => console.log(err));
+        localStorage.removeItem("accessToken")
+        dispatch(deleteUser())
+
+    };
+
+    
     return (
+
+
         <header>
             <nav className={styles.navBar}>
 
@@ -46,6 +64,7 @@ const Header: React.FC = () => {
                     <li> <Link to="board" className={styles.linkStyle}> <span><FaClipboardUser /> TaskCraft</span></Link></li>
                     <li> <Link to="/user" className={styles.linkStyle}> <span>User</span></Link></li>
                     <li> <Link to="/article/:id" className={styles.linkStyle}> <span>Workspace</span></Link></li>
+                    {/* <li><button onClick={handleSignOut}> Log Out</button></li> */}
                 </ul>
 
 
@@ -56,10 +75,9 @@ const Header: React.FC = () => {
                         <span className={styles.searchIcon}><FaSistrix /></span>
                     </div>
 
-                    <div>
+                    <div className={styles.navIconsLi}>
                         <ul className={styles.navIcons}>
-                            <li> <Link to=""> <span><FaRegBell /></span></Link></li>
-                            <li> <Link to=""> <span><FaRegCircleQuestion /></span></Link></li>
+                   
 
                             <li>
                                 <div ref={userMenuRef}

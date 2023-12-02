@@ -47,6 +47,9 @@ header span {
     border-radius: 10px;
 }
 
+.navIconsLi {
+margin-left: 10px;
+}
 
 .navIcons {
     display: flex;
@@ -85,6 +88,7 @@ a {
 
 .searchBox {
  position: relative;
+ 
   }
 
 .searchIcon {
@@ -94,6 +98,7 @@ a {
     transform: translateY(-50%);
     color: black;
 }
+
 
 .userPhoto img {
      height: 25px;
